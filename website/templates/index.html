@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quad Cure</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap"
+    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="icon" href="{{ url_for('static', filename='home.png') }}" type="image/x-icon">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merienda:wght@300..900&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap"
+    rel="stylesheet">
+
+    <style>body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+        background: linear-gradient(to right, rgba(1, 5, 16, 1), rgba(13, 44, 88, 1)), url('background-image.jpg') no-repeat center center fixed;
+        background-size: cover;
+        background-blend-mode: overlay;
+        color: white;
+    }
+    
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        /* background-color: rgba(13, 44, 88, 0.8); semi-transparent background */
+        padding: 1rem;
+    }
+    
+    .header-left {
+        display: flex;
+        align-items: center;
+       
+    }
+    
+    .logo {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        border-radius: 100px;
+    }
+    
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+    }
+    
+    nav ul li {
+        margin: 0 1rem;
+    }
+    
+    nav ul li a {
+        color: white;
+        font-weight: 800;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        position: relative;
+        
+        
+    }
+    
+    nav ul li a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        background-color:white;
+        left: 0;
+        bottom: -5px;
+        transition: width 0.3s ease;
+       
+    }
+    
+    nav ul li a:hover::after {
+        width: 100%;
+        
+    }
+    nav ul li :hover{
+        color:#c02050;
+        font-weight: 900;
+    }
+    .header-right {
+        display: flex;
+        align-items: center;
+    }
+    
+    .header-right input {
+        padding: 0.5rem;
+        border: none;
+        border-radius: 4px;
+    }
+    
+    main {
+        padding: 2rem;
+        text-align: center;
+        color: white;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+    }
+    
+    .event-banner {
+        display: flex;
+        justify-content: space-between;
+        align-items: top-left;
+        /* background-color: rgba(13, 44, 88, 0.8); semi-transparent background */
+        padding: 2rem;
+        border-radius: 10px;
+        
+    }
+    
+    .event-info {
+        max-width: 50%;
+        text-align: left;
+    }
+    
+    .event-info h1 {
+        font-size: 3rem;
+        margin: 0;
+       
+    }
+    
+    .event-info .event-date {
+        font-size: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    /* .buy-tickets {
+        background-color: #000;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        
+    }
+    
+    .buy-tickets:hover {
+        background-color: #444;
+    } */
+    
+    
+    /* CSS */
+             
+    .btn-grad {
+        background-image: linear-gradient(to right, #000000 0%, #c02050  51%, #000000  100%);
+        margin: 10px;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 15px 45px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;            
+        box-shadow: 0 0 20px rgb(2, 2, 57);
+        border-radius: 10px;
+        display: block;
+      }
+    
+      .btn-grad:hover {
+        background-position: right center; /* change the direction of the change here */
+        color: #fff;
+        text-decoration: none;
+      }
+     
+    /* CSS */
+             
+    .btn-grad {
+        background-image: linear-gradient(to right, #000000 0%, #c02050  51%, #000000  100%);
+        margin: 10px;
+        margin-left: 130px;
+        padding: 15px 45px;
+        text-align: center;
+        text-transform: uppercase;
+        transition: 0.5s;
+        background-size: 200% auto;
+        color: white;            
+        box-shadow: 0 0 20px rgb(2, 2, 57);
+        border-radius: 10px;
+        display: block;
+      }
+      
+      .styled-button {
+        background: transparent;
+        border: none;
+        margin: 20px;
+        display: block;
+        font-size: 18px;
+        font-weight: 600;
+        outline: none;
+        position: relative;
+        transition: 0.3s;
+        padding: 10px;
+        cursor: pointer;
+        color: white; /* Ensure text color is white */
+    }
+    
+    .styled-button::before {
+        content: '';
+        border-bottom: 1px solid #c02050;
+        padding: 0 10px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        width: 0;
+        transition: 0.3s;
+    }
+    
+    .styled-button:hover::before {
+        width: 100%;
+        padding: 0;
+    }
+    
+    .styled-button:active {
+        background: rgb(165, 3, 122);
+        color: white;
+        transition: none;
+    }
+    
+    
+      .btn-grad:hover {
+        background-position: right center; /* change the direction of the change here */
+        color: #fff;
+        text-decoration: none;
+      }
+      
+      #losi{
+        width: 130px;
+        padding: 5px 10px;
+      }
+     
+    .event-description {
+        margin-top: 1rem;
+        font-size: 1.5rem;
+        line-height: 1.5;
+    }
+    
+    .event-image img {
+        max-width: 80%;
+        border-radius: 300px;
+        z-index: 1;
+        box-shadow: 5px 5px 5px 5px #c0f8fe;
+    }
+    .button-container {
+        display: flex;
+        gap: 0.5px; /* Adjust the gap between buttons */
+        
+    }
+    .container{
+        display: inline-block;
+      }
+      .typed-out{
+        overflow: hidden;
+        border-right: .15em solid orange;
+        white-space: nowrap;
+        animation: 
+          typing 3s forwards;
+        transition-timing-function: ease-in-out;
+        font-size: 1.6rem;
+        width: 0;
+      }
+      @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+      }
+    
+      
+    
+    .event-date {
+      font-family: "Playwrite GB S", cursive;
+      font-weight: 200;
+      font-optical-sizing: auto;
+      font-style: normal;
+    }
+    
+    
+    
+    h1 {
+      font-family: "Merienda", cursive;
+      font-optical-sizing: auto;
+      font-weight: 900;
+      font-style: normal;
+    }
+    
+    
+      
+    footer {
+        /* background-color: rgba(13, 44, 88, 0.8); semi-transparent background */
+        color: white;
+        text-align: center;
+        padding: 1rem;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+    }
+    #logout{
+        margin-top: 15px;
+       
+    }
+    #logout a{
+       
+        color: #fff;
+        color: rgb(118, 118, 218);
+        text-decoration: none;
+        font-weight: 900;
+    }
+    .event-image {
+    perspective: 1000px;
+}
+
+.animated-image {
+    width: 550px;
+    height: 500px;
+    transform-style: preserve-3d;
+    animation: rotateImage 15s infinite linear;
+}
+
+@keyframes rotateImage {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+.animated-image {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.event-image:hover .animated-image {
+    animation: rotateImage 2s infinite linear;
+}
+    </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-left">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        <div class="qu">QUAD-CURE</div>
+
+    </div>
+    <div class="header-right">
+
+      <!-- <input type="text" placeholder="Search"> -->
+      <nav>
+        <ul>
+          <li><a href="#">Home</a></li>
+          
+          <li><a href="{{ url_for('details_form') }}">Add Details</a></li>
+          <li><a href="http://127.0.0.1:5500/website/templates/hi.html">Consultancy</a></li>
+        </ul>
+      </nav>
+   
+      <div class="btn-grad" >
+        <div id="losi" ></div>
+        {% if 'email' in session %}
+            <div class="btn">{{ session['email'] }}</div>
+            <div class="btn" id="logout"><a href="/logout">Logout</a></div>
+        {% else %}
+            <div class="btn" id="loginSignupButton">Login / Signup</div>
+        {% endif %}
+    </div>    </div>
+  </header>
+
+  <main>
+    <div class="event-banner">
+      <div class="event-info">
+        <h1>QUAD-CURE</h1>
+
+        <p class="event-date">lets take care of our heart!!</p>
+        <!-- <div class="container">
+          <div class="typed-out">"Your Heart's Health", "Your Mental Health"</div>
+        </div> -->
+
+
+        <p class="event-description">Let's make choices today that will make our hearts smile tomorrow. Health is
+          wealth, and a strong heart is priceless. <br>Every heart is special, every heart needs care and love. <br>
+          Here's to a heart full of happiness and a life filled with love.</p>
+        <div class="button-container">
+          <form action="{{ url_for('start_script') }}" method="post">
+            <button id="btn-grad" class="btn-grad" type="submit">Start Monitoring</button>
+        </form>
+        
+       
+      
+          <!-- <form action="/results" method="get">
+            <button  class="styled-button" id="result" type="submit">GET RESULT</button>
+        </form> -->
+        </div>
+      </div>
+      <div class="event-image">
+        <img src="{{ url_for('static', filename='home.png') }}" class="animated-image" alt="Event">
+    </div>
+    </div>
+  </main>
+
+  <footer>
+
+    <p>Do your part by just taking care of your heart always!!</p>
+  </footer>
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('loginSignupButton').addEventListener('click', function() {
+        window.location.href = '/login';
+    });
+
+    // Add event listener for Add Details button
+    document.getElementById('addDetailsButton').addEventListener('click', function() {
+        window.location.href = '/detail'; // Navigate to detail.html when clicked
+    });
+</script>
+</body>
+
+</html>
