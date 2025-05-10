@@ -7,7 +7,7 @@ from appwrite.services.account import Account
 from appwrite.services.databases import Databases
 from appwrite.id import ID
 from database.save_user import save_user_data
-from ml_logic.predict import get_user_details, predict_manually
+from ml_logic.predict import get_user_details, predict_manually # type: ignore
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
