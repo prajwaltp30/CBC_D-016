@@ -20,7 +20,7 @@ from opencv_scan.scan import generate_frames, get_live_data
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change this
 
-# Appwrite setup
+# Appwrite setupdownload_report
 client = Client()
 client.set_endpoint('https://cloud.appwrite.io/v1')
 client.set_project('667f8c85002229461ca8')
@@ -144,6 +144,20 @@ def live_data():
 
 @app.route('/results', methods=['GET', 'POST'])
 def show_results():
+    if request.method == 'POST':
+        avg_bpm = request.form.get('avg_bpm')
+        avg_hrv = request.form.get('avg_hrv')
+        avg_stress = request.form.get('avg_stress')
+        avg_spo2 = request.form.get('avg_spo2')
+
+        # 👉 Store into session!
+        session['avg_bpm'] = avg_bpm
+        session['avg_hrv'] = avg_hrv
+        session['avg_stress'] = avg_stress
+        session['avg_spo2'] = avg_spo2
+    else:
+        avg_bpm = avg_hrv = avg_stress = avg_spo2 = None
+
     additional_graph_exists = os.path.exists("static/final_graph.png")
 
     bpm_data = []
@@ -157,7 +171,12 @@ def show_results():
 
     return render_template('results.html',
                            additional_graph_exists=additional_graph_exists,
-                           average_bpm=average_bpm)
+                           average_bpm=average_bpm,
+                           avg_bpm=avg_bpm,
+                           avg_hrv=avg_hrv,
+                           avg_stress=avg_stress,
+                           avg_spo2=avg_spo2)
+
 
 @app.route('/details_form')
 def details_form():
@@ -195,13 +214,26 @@ def save_details():
 
 # [rest of ml prediction, download_report remains same, not changed]
 
-@app.route('/ml')
+@app.route('/ml', methods=['GET', 'POST'])
 def ml():
+    avg_bpm = session.get('avg_bpm')
+    avg_hrv = session.get('avg_hrv')
+    avg_stress = session.get('avg_stress')
+    avg_spo2 = session.get('avg_spo2')
+
     email = session.get('email')
     user_details = None
     if email:
         user_details = get_user_details(email)
-    return render_template('ml.html', user_details=user_details)
+
+    return render_template('ml.html',
+                           user_details=user_details,
+                           avg_bpm=avg_bpm,
+                           avg_hrv=avg_hrv,
+                           avg_stress=avg_stress,
+                           avg_spo2=avg_spo2)
+
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -231,12 +263,13 @@ def predict():
         bp2 = int(user_details['blood_pressure_diastolic'])
 
         try:
-            heart_rate = int(request.form['heart_rate'])
-            stress_level = int(request.form['stress_level'])
-            hrv = int(request.form['hrv'])
-            spo2 = int(request.form['spo2'])
-        except KeyError as e:
-            return render_template('ml.html', error=f"Missing form data: {e}")
+            heart_rate = int(float(request.form['heart_rate']))
+            stress_level = int(float(request.form['stress_level']))
+            hrv = int(float(request.form['hrv']))
+            spo2 = int(float(request.form['spo2']))
+        except (ValueError, TypeError):
+            return render_template('ml.html', error="Invalid input data.")
+
 
         predicted_heart_attack_risk, predicted_percentage = predict_manually(
             age, sex, heart_rate, diabetes, family_history, smoking, obesity,
@@ -290,6 +323,17 @@ def predict():
     else:
         return render_template('ml.html')
 
+from datetime import datetime
+
+from datetime import datetime
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, PageBreak
+from io import BytesIO
+from flask import Response, session, request
+import os
+
 @app.route('/download_report', methods=['POST'])
 def download_report():
     if request.method == 'POST':
@@ -303,6 +347,35 @@ def download_report():
 
         report_content = request.form['report_content']
 
+        # Fetch avg values from session
+        avg_bpm = session.get('avg_bpm', 'N/A')
+        avg_hrv = session.get('avg_hrv', 'N/A')
+        avg_stress = session.get('avg_stress', 'N/A')
+        avg_spo2 = session.get('avg_spo2', 'N/A')
+
+        # Mapping values
+        sex_map = {0: 'Female', 1: 'Male'}
+        yes_no_map = {0: 'No', 1: 'Yes'}
+        diet_map = {0: 'Poor Diet', 1: 'Average Diet', 2: 'Good Diet'}
+
+        formatted_details = {
+            'Vital': 'Value',
+            'Age': user_details['age'],
+            'Sex': sex_map.get(user_details['sex'], 'Unknown'),
+            'Diabetes': yes_no_map.get(user_details['diabetes'], 'Unknown'),
+            'Family History': yes_no_map.get(user_details['famhistory'], 'Unknown'),
+            'Smoking': yes_no_map.get(user_details['smoking'], 'Unknown'),
+            'Obesity': yes_no_map.get(user_details['obesity'], 'Unknown'),
+            'Alcohol Consumption': yes_no_map.get(user_details['alcohol'], 'Unknown'),
+            'Exercise Hours/Week': user_details['exercise_hours'],
+            'Diet': diet_map.get(user_details['diet'], 'Unknown'),
+            'Previous Heart Problems': yes_no_map.get(user_details['heart_problem'], 'Unknown'),
+            'BMI': user_details['bmi'],
+            'Physical Activity Days/Week': user_details['physical_activity'],
+            'Sleep Hours/Day': user_details['sleep_hours'],
+            'Blood Pressure (Sys/Dia)': f"{user_details['blood_pressure_systolic']}/{user_details['blood_pressure_diastolic']}",
+        }
+
         pdf_buffer = BytesIO()
         doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
 
@@ -310,60 +383,94 @@ def download_report():
         title_style = ParagraphStyle(
             'TitleStyle',
             parent=styles['Title'],
-            fontSize=18,
-            spaceAfter=14,
+            fontSize=24,
+            spaceAfter=20,
+            alignment=1,  # Center
+            textColor=colors.darkblue
         )
-
-        body_style = ParagraphStyle(
-            'BodyStyle',
+        normal_style = ParagraphStyle(
+            'NormalStyle',
             parent=styles['BodyText'],
             fontSize=12,
-            leading=14,
             spaceAfter=10,
         )
 
         elements = []
 
-        elements.append(Paragraph("Heart Attack Risk Report", title_style))
-        elements.append(Spacer(1, 12))
+        # Top title
+        elements.append(Paragraph("Cardio Care Online Report", title_style))
+        elements.append(Spacer(1, 10))
 
-        user_info = f"""
-        <b>User Details:</b><br/>
-        Age: {user_details['age']}<br/>
-        Sex: {user_details['sex']}<br/>
-        Diabetes: {user_details['diabetes']}<br/>
-        Family History: {user_details['famhistory']}<br/>
-        Smoking: {user_details['smoking']}<br/>
-        Obesity: {user_details['obesity']}<br/>
-        Alcohol Consumption: {user_details['alcohol']}<br/>
-        Exercise Hours Per Week: {user_details['exercise_hours']}<br/>
-        Diet: {user_details['diet']}<br/>
-        Previous Heart Problems: {user_details['heart_problem']}<br/>
-        BMI: {user_details['bmi']}<br/>
-        Physical Activity Days Per Week: {user_details['physical_activity']}<br/>
-        Sleep Hours Per Day: {user_details['sleep_hours']}<br/>
-        Blood Pressure (Systolic/Diastolic): {user_details['blood_pressure_systolic']}/{user_details['blood_pressure_diastolic']}<br/>
-        """
+        # Date and time
+        current_time = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        elements.append(Paragraph(f"<b>Generated on:</b> {current_time}", normal_style))
+        elements.append(Spacer(1, 20))
 
-        elements.append(Paragraph(user_info, body_style))
-        elements.append(Spacer(1, 12))
+        # User details table
+        user_data = [[Paragraph(f"<b>{key}</b>", normal_style), Paragraph(str(value), normal_style)] for key, value in formatted_details.items()]
+        user_table = Table(user_data, colWidths=[220, 300])
+        user_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 0), (-1, -1), 11),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ]))
+        elements.append(user_table)
+        elements.append(Spacer(1, 20))
 
-        elements.append(Paragraph(report_content, body_style))
-        elements.append(Spacer(1, 12))
+        # Vitals neatly
+        vitals_data = [
+            ["Vital", "Value"],
+            ["Average Heart Rate (BPM)", avg_bpm],
+            ["Average HRV (ms)", avg_hrv],
+            ["Average Stress Index", avg_stress],
+            ["Average SpO2 (%)", avg_spo2],
+        ]
+        vitals_table = Table(vitals_data, colWidths=[220, 300])
+        vitals_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, -1), 11),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.aliceblue),
+            ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ]))
+        elements.append(vitals_table)
 
-        image_path = 'static/final_graph.png'
-        elements.append(Image(image_path, width=4 * inch, height=4 * inch))
-        elements.append(Spacer(1, 12))
+        # 👉 After vitals, go to new page
+        elements.append(PageBreak())
+
+        # Full second page - Report Summary
+        elements.append(Paragraph("<b>Report Summary:</b>", title_style))
+        elements.append(Spacer(1, 20))
+        elements.append(Paragraph(report_content, normal_style))
+
+        # 👉 After report summary, go to next page
+        elements.append(PageBreak())
+
+        # Third page - Graph
+        graph_path = 'static/final_graph.png'
+        if os.path.exists(graph_path):
+            img = Image(graph_path, width=500, height=600)
+            elements.append(img)
 
         doc.build(elements)
 
         pdf_buffer.seek(0)
         response = Response(pdf_buffer, mimetype='application/pdf')
-        response.headers.set("Content-Disposition", "attachment", filename="heart_attack_report.pdf")
+        response.headers.set("Content-Disposition", "attachment", filename="cardio_care_report.pdf")
 
         return response
     else:
         return "Method not allowed."
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
