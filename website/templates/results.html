@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+   * {
+  font-family: 'Poppins', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(to right, rgba(1, 5, 16, 1), rgba(13, 44, 88, 1));
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Updated Heading */
+h1 {
+  color: white;
+  margin-bottom: 30px;
+  font-size: 2.8rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 2px;
+  position: relative;
+  padding-left: 60px;
+}
+
+h1::before {
+  content: "📊";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.8rem;
+}
+
+.top-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  width: 90vw;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.25);
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  min-height: 120px;
+}
+
+.averages {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.averages p {
+  background: #f9f9f9;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  min-width: 160px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.averages p:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.averages p span {
+  color: #c02050;
+  font-weight: bold;
+  font-size: 1.4em;
+  display: block;
+  margin-top: 8px;
+}
+
+.predict-button {
+  margin-left: 20px;
+}
+
+.predict-button button {
+  background: #c02050;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.predict-button button:hover {
+  background: #a0143f;
+  transform: scale(1.05);
+}
+
+.graph-section {
+  width: 90vw;
+  background: white;
+  padding: 15px;
+  border-radius: 16px;
+  box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.25);
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.graph-section img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+  </style>
+</head>
+<body>
+
+  <h1>GRAPH REPORT</h1>
+
+  <!-- Top Section -->
+  <div class="top-section">
+    <div class="averages">
+      <p>❤ Heart Rate: <span>{{ avg_bpm }}</span> BPM</p>
+      <p>📈 HRV: <span>{{ avg_hrv }}</span> ms</p>
+      <p>😰 Stress: <span>{{ avg_stress }}</span></p>
+      <p>🫁 SpO₂: <span>{{ avg_spo2 }}</span> %</p>
+    </div>
+    <div class="predict-button">
+      <form action="/ml" method="get">
+        <button type="submit">Predict</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Graph Section -->
+  <div class="graph-section">
+    <img src="{{ url_for('static', filename='final_graph.png') }}" alt="Health Graph">
+  </div>
+
+</body>
+</html>

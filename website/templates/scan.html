@@ -1,0 +1,293 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>💓 Live Heart Monitoring</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgb(32, 31, 31);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 10px;
+      font-size: 32px;
+      color: #fff;
+    }
+
+    #averages {
+      display: flex;
+      justify-content: space-around;
+      background: black;
+      padding: 20px;
+      margin-top: 20px;
+      width: 90%;
+      max-width: 1200px;
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    #averages div {
+      text-align: center;
+    }
+
+    #main-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin-top: 40px;
+      width: 100%;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    #video-container img {
+      width: 500px;
+      height: 400px;
+      object-fit: cover;
+      border: 3px solid #4CAF50;
+      border-radius: 20px;
+      margin-left: -400px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    #graphs-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 500px;
+      max-width: 100%;
+    }
+
+    canvas {
+      background: black;
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .styled-button {
+      background-color: #f7355c;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 25px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .styled-button:hover {
+      background-color: #e63e5c;
+      transform: scale(1.05);
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    /* Extra for mobile responsiveness */
+    @media (max-width: 768px) {
+      #graphs-container {
+        grid-template-columns: 1fr;
+      }
+
+      #video-container img {
+        width: 90%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>💓 Live Heart Monitoring Dashboard</h2>
+
+  <div id="averages">
+    <div>❤ Avg Heart Rate<br><span id="avg-bpm">Calculating...</span> BPM</div>
+    <div>📈 Avg HRV<br><span id="avg-hrv">Calculating...</span> ms</div>
+    <div>😰 Avg Stress<br><span id="avg-stress">Calculating...</span></div>
+    <div>🫁 Avg SpO₂<br><span id="avg-spo2">Calculating...</span> %</div>
+  </div>
+
+
+  <form action="/results" method="post" id="resultForm">
+    <input type="hidden" name="avg_bpm" id="hidden-avg-bpm">
+    <input type="hidden" name="avg_hrv" id="hidden-avg-hrv">
+    <input type="hidden" name="avg_stress" id="hidden-avg-stress">
+    <input type="hidden" name="avg_spo2" id="hidden-avg-spo2">
+    <button class="styled-button" id="result" type="submit">✨ Get Results</button>
+</form>
+  <div id="main-container">
+    <div id="video-container">
+      <img src="{{ url_for('video_feed') }}" alt="Live Video Feed">
+    </div>
+
+    <div id="graphs-container">
+      <canvas id="bpmChart"></canvas>
+      <canvas id="hrvChart"></canvas>
+      <canvas id="stressChart"></canvas>
+      <canvas id="spo2Chart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const bpmCtx = document.getElementById('bpmChart').getContext('2d');
+    const hrvCtx = document.getElementById('hrvChart').getContext('2d');
+    const stressCtx = document.getElementById('stressChart').getContext('2d');
+    const spo2Ctx = document.getElementById('spo2Chart').getContext('2d');
+
+    const bpmChart = new Chart(bpmCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'BPM',
+          borderColor: 'blue',
+          backgroundColor: 'lightblue',
+          data: []
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { min: 50, max: 130, ticks: { stepSize: 5 } }
+        }
+      }
+    });
+
+    const hrvChart = new Chart(hrvCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'HRV (ms)',
+          borderColor: 'purple',
+          backgroundColor: 'violet',
+          data: []
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { min: 500, max: 1000 }
+        }
+      }
+    });
+
+    const stressChart = new Chart(stressCtx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'Stress Level',
+          borderColor: 'red',
+          backgroundColor: 'pink',
+          data: []
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { min: 0, max: 100000 }
+        }
+      }
+    });
+
+    const spo2Chart = new Chart(spo2Ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{
+          label: 'SpO₂ (%)',
+          borderColor: 'green',
+          backgroundColor: 'lightgreen',
+          data: []
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { min: 85, max: 100 }
+        }
+      }
+    });
+
+    let scanFinished = false;
+
+    function fetchLiveData() {
+      if (scanFinished) return;
+
+      fetch('/live_data')
+        .then(response => response.json())
+        .then(data => {
+          const now = new Date().toLocaleTimeString();
+
+          if (bpmChart.data.labels.length > 20) {
+            bpmChart.data.labels.shift();
+            bpmChart.data.datasets[0].data.shift();
+          }
+          bpmChart.data.labels.push(now);
+          bpmChart.data.datasets[0].data.push(data.bpm);
+          bpmChart.update();
+
+          if (hrvChart.data.labels.length > 20) {
+            hrvChart.data.labels.shift();
+            hrvChart.data.datasets[0].data.shift();
+          }
+          hrvChart.data.labels.push(now);
+          hrvChart.data.datasets[0].data.push(data.hrv);
+          hrvChart.update();
+
+          if (stressChart.data.labels.length > 20) {
+            stressChart.data.labels.shift();
+            stressChart.data.datasets[0].data.shift();
+          }
+          stressChart.data.labels.push(now);
+          stressChart.data.datasets[0].data.push(data.stress);
+          stressChart.update();
+
+          if (spo2Chart.data.labels.length > 20) {
+            spo2Chart.data.labels.shift();
+            spo2Chart.data.datasets[0].data.shift();
+          }
+          spo2Chart.data.labels.push(now);
+          spo2Chart.data.datasets[0].data.push(data.spo2);
+          spo2Chart.update();
+
+          if (data.scan_completed) {
+            scanFinished = true;
+            document.getElementById('avg-bpm').textContent = data.avg_bpm;
+            document.getElementById('avg-hrv').textContent = data.avg_hrv;
+            document.getElementById('avg-stress').textContent = data.avg_stress;
+            document.getElementById('avg-spo2').textContent = data.avg_spo2;
+          }
+          document.getElementById('result').addEventListener('click', function(event) {
+                document.getElementById('hidden-avg-bpm').value = document.getElementById('avg-bpm').textContent;
+                document.getElementById('hidden-avg-hrv').value = document.getElementById('avg-hrv').textContent;
+                document.getElementById('hidden-avg-stress').value = document.getElementById('avg-stress').textContent;
+                document.getElementById('hidden-avg-spo2').value = document.getElementById('avg-spo2').textContent;
+        });
+    })
+        .catch(error => console.error('Error fetching live data:', error));
+    }
+
+    setInterval(fetchLiveData, 1000);
+  </script>
+
+</body>
+</html>

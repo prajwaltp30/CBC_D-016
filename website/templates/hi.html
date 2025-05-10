@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Healthcare Website</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <STYle>
+      body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    background: linear-gradient(to right, rgba(1, 5, 16, 1), rgba(13, 44, 88, 1)), url('background-image.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-blend-mode: overlay;
+    color: white;
+}
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: rgba(13, 44, 88, 0.8); semi-transparent background */
+    padding: 1rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+   
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 100px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 1rem;
+}
+
+nav ul li a {
+    color: white;
+    font-weight: 800;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    position: relative;
+    
+    
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color:white;
+    left: 0;
+    bottom: -5px;
+    transition: width 0.3s ease;
+   
+}
+
+nav ul li a:hover::after {
+    width: 100%;
+    
+}
+nav ul li :hover{
+    color:#c02050;
+    font-weight: 900;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.header-right input {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+}
+
+main {
+    padding: 2rem;
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+}
+
+.event-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: top-left;
+    /* background-color: rgba(13, 44, 88, 0.8); semi-transparent background */
+    padding: 2rem;
+    border-radius: 10px;
+    
+}
+
+.event-info {
+    max-width: 50%;
+    text-align: left;
+}
+
+.event-info h1 {
+    font-size: 3rem;
+    margin: 0;
+   
+}
+
+.event-info .event-date {
+    font-size: 1.5rem;
+    margin: 2rem 0;
+}
+
+/* .buy-tickets {
+    background-color: #000;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    
+}
+
+.buy-tickets:hover {
+    background-color: #444;
+} */
+
+
+/* CSS */
+         
+.btn-grad {
+    background-image: linear-gradient(to right, #000000 0%, #c02050  51%, #000000  100%);
+    margin: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px rgb(2, 2, 57);
+    border-radius: 10px;
+    display: block;
+  }
+
+  .btn-grad:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
+ 
+/* CSS */
+         
+.btn-grad {
+    background-image: linear-gradient(to right, #000000 0%, #c02050  51%, #000000  100%);
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px rgb(2, 2, 57);
+    border-radius: 10px;
+    display: block;
+  }
+  
+  .styled-button {
+    background: transparent;
+    border: none;
+    margin: 20px;
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    outline: none;
+    position: relative;
+    transition: 0.3s;
+    padding: 10px;
+    cursor: pointer;
+    color: white; /* Ensure text color is white */
+}
+
+.styled-button::before {
+    content: '';
+    border-bottom: 1px solid #c02050;
+    padding: 0 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 0;
+    transition: 0.3s;
+}
+
+.styled-button:hover::before {
+    width: 100%;
+    padding: 0;
+}
+
+.styled-button:active {
+    background: rgb(165, 3, 122);
+    color: white;
+    transition: none;
+}
+
+
+  .btn-grad:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  #losi{
+    width: 130px;
+    padding: 10px 20px;
+  }
+ 
+.event-description {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    line-height: 1.5;
+}
+
+.event-image img {
+    max-width: 80%;
+    border-radius: 300px;
+    z-index: 1;
+    box-shadow: 5px 5px 5px 5px #c0f8fe;
+}
+
+.event-image {
+    perspective: 1000px;
+}
+
+.animated-image {
+    width: 300px;
+    height: 300px;
+    transform-style: preserve-3d;
+    animation: rotateImage 5s infinite linear;
+}
+
+@keyframes rotateImage {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+.animated-image {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.event-image:hover .animated-image {
+    animation: rotateImage 2s infinite linear;
+}
+
+
+.button-container {
+    display: flex;
+    gap: 0.5px; /* Adjust the gap between buttons */
+    
+}
+.container{
+    display: inline-block;
+  }
+  .typed-out{
+    overflow: hidden;
+    border-right: .15em solid orange;
+    white-space: nowrap;
+    animation: 
+      typing 3s forwards;
+    transition-timing-function: ease-in-out;
+    font-size: 1.6rem;
+    width: 0;
+  }
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+
+  
+
+.event-date {
+  font-family: "Playwrite GB S", cursive;
+  font-weight: 200;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+
+
+h1 {
+  font-family: "Merienda", cursive;
+  font-optical-sizing: auto;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.doctor-image img{
+    width: 400px;
+    height: 400px;
+    border-radius: 100%;
+    z-index: 1;
+    box-shadow: 5px 5px 5px 5px #c0f8fe;
+    margin-left: 60%;
+
+}
+
+.content {
+    display: flex;
+    flex-direction: row; /* Align elements in a row */
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: -2%;
+    padding: 10px;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.left-side,
+.right-side {
+    flex: 1;
+    padding: 20px;
+}
+
+.patient-form {
+    background-color: rgba(75, 77, 164, 0.9); /* Slightly transparent background */
+    padding: 20px; /* Reduce padding for better fit */
+    border-radius: 10px; /* Round the corners */
+    color: white; /* Set text color to white */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    width: 100%;
+    max-width: 400px; /* Set a maximum width */
+    margin: 0 auto; /* Center the form horizontally */
+}
+
+.patient-form h2 {
+    text-align: left;
+    margin-bottom: 15px; /* Reduce margin for better fit */
+    color: white; /* Ensure the header text is white */
+}
+
+.patient-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.patient-form input[type="text"],
+.patient-form input[type="number"],
+.patient-form input[type="tel"],
+.patient-form select,
+.patient-form textarea,
+.patient-form input[type="file"] {
+    width: 100%; /* Full width */
+    padding: 8px; /* Reduce padding for better fit */
+    margin-bottom: 15px; /* Reduce margin for better fit */
+    /* border: none;
+    border-radius: 5px; */
+    /* background-color: #595CE8; Background color of the input fields */
+    color: white;
+}
+input {
+    border: 0;
+    outline: 0;
+    background: transparent;
+    border-bottom: 1px solid black;
+  }
+.patient-form input[type="text"]:focus,
+.patient-form input[type="number"]:focus,
+.patient-form input[type="tel"]:focus,
+.patient-form select:focus,
+.patient-form textarea:focus,
+.patient-form input[type="file"]:focus {
+    outline: none; /* Remove the default outline */
+    border: 2px solid #4B4DA4; /* Add a focus border */
+}
+
+.patient-form input[type="text"]::placeholder,
+.patient-form input[type="number"]::placeholder,
+.patient-form input[type="tel"]::placeholder,
+.patient-form select::placeholder,
+.patient-form textarea::placeholder,
+.patient-form input[type="file"]::placeholder {
+    color:white; /* Placeholder text color */
+}
+
+
+.patient-form textarea {
+    resize: none; /* Disable resizing */
+    background-color: transparent;
+}
+
+.patient-form button {
+    width: 100%; /* Full width */
+    padding: 10px; /* Reduce padding for better fit */
+    background-color: white; /* Background color of the button */
+    color: #4B4DA4; /* Text color of the button */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.patient-form button:hover {
+    background-color: #c48484; /* Slightly darker background on hover */
+}
+
+.patient-form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.patient-form a {
+    color: #f4f4f4; /* Ensure link text is white */
+    text-decoration: underline; /* Underline the link */
+}
+
+.patient-form a:hover {
+    color: #ffffff; /* Brighter link on hover */
+}
+
+#gender{
+    background: transparent;
+    border: #000000;
+    
+}
+#gender option {
+    background-color: transparent; 
+    color: #000;
+
+    /* Ensure options are transparent */
+}
+
+/* Style for dropdown when open */
+/* #gender:focus,
+#gender:active {
+    background-color: transparent; /* Change background color when clicked */
+/* } */ */
+
+.patient-form input[type="file"] {
+    display: none;
+  }
+  
+  .custom-file-upload {
+    border: 1px solid #153dc1;
+    border-radius: 50%;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+
+#submit{
+    
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color,border-color,color,box-shadow,filter;
+    transition-duration: .3s;
+    border: 1px solid transparent;
+    letter-spacing: 2px;
+    min-width: 160px;
+    text-transform: uppercase;
+    white-space: normal;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px 14px 18px;
+    color:white;
+    box-shadow: inset 0 0 0 2px #616467;
+    background-color: transparent;
+    height: 48px;
+}
+   #submit:hover{
+        color: #fff;
+        background-color: #616467;
+    }
+
+
+
+main{
+    overflow: hidden;
+}
+  
+footer {
+    /* background-color: rgba(13, 44, 88, 0.8); semi-transparent background */
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}#loc{
+  margin-bottom: 10px;
+}
+    </STYle>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <img src="../static/logo.png" alt="Logo" class="logo">
+            <h1>QUAD-CURE</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <!-- <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">ADD DETAILS</a></li>
+                <li><a href="consultancy.html">Consultancy</a></li> -->
+                <!-- <li><a href="contact.html">Contact</a></li> -->
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="content">
+            <div class="left-side">
+                <div class="patient-form">
+                    <h2>Patient Details</h2>
+                    <form action="" method="post" enctype="multipart/form-data">
+                      <button id="loc" onclick="getLocation()">Get Location</button>
+                      <div id="location" class="location"></div>
+                        <label for="name"></label>
+                        <input type="text" id="name" placeholder="Your Name" name="name" required><br>
+                        
+                        <label for="age"></label>
+                        <input type="number" id="age" placeholder="Your Age" name="age" required><br>
+                        
+                        <label for="gender"></label>
+                        <select id="gender" placeholder="Gender" name="gender" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select><br>
+                        
+                        <label for="contact"></label>
+                        <input type="tel" id="contact" placeholder="Mobile No." name="contact" required ><br>
+                        
+                        <label for="address"></label>
+                        <textarea id="address" placeholder="Address" name="address" rows="3" required></textarea><br>
+                    
+                        
+                        <label for="upload">Upload Medical Records:</label>
+                        <input type="file" id="upload" name="upload" accept=".pdf, .doc, .docx, .jpg, .png" required><br>
+                        
+                        <button type="submit" id="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="right-side">
+                <div class="doctor-image">
+                    <img src="../static/5.png" alt="Event">
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- <footer>
+        <p>&copy; 2024 Healthcare Website. All rights reserved.</p>
+    </footer> -->
+    <script>
+      let map;
+      let platform;
+      let userLocation;
+
+      function getLocation() {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition);
+          } else {
+              document.getElementById("location").innerText = "Geolocation is not supported by this browser.";
+          }
+      }
+
+      function showPosition(position) {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          userLocation = { lat, lng };
+          document.getElementById("location").innerText = `Latitude: ${lat.toFixed(6)}, Longitude: ${lng.toFixed(6)}`; // Displaying location with fixed precision
+          
+          initializeMap(lat, lng);
+          findNearbyPlaces(lat, lng);
+      }
+
+      function initializeMap(lat, lng) {
+          platform = new H.service.Platform({
+              apikey: '79BjUMHuO-hgnBeiu4d7FlIgei5iAQFbxk30C-C-AdA' // Replace with your HERE API key
+          });
+
+          const defaultLayers = platform.createDefaultLayers();
+          map = new H.Map(document.getElementById('map'),
+              defaultLayers.vector.normal.map, {
+              center: { lat, lng },
+              zoom: 14, // Adjusted zoom level for better visibility
+              pixelRatio: window.devicePixelRatio || 1
+          });
+
+          const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+          const ui = H.ui.UI.createDefault(map, defaultLayers);
+      }
+
+      function findNearbyPlaces(lat, lng) {
+          const placesService = platform.getPlacesService();
+
+          const params = {
+              at: `${lat},${lng}`,
+              q: 'hospital,doctor',
+              size: 20
+          };
+
+          placesService.explore(params, result => {
+              result.results.items.forEach(item => {
+                  const marker = new H.map.Marker(item.position);
+                  map.addObject(marker);
+
+                  // Display details for each place
+                  const placeDetails = document.createElement('div');
+                  placeDetails.classList.add('place-details');
+                  placeDetails.innerHTML = `
+                      <h3>${item.title}</h3>
+                      <p><strong>Category:</strong> ${item.category.title}</p>
+                      <p><strong>Distance:</strong> ${item.distance.toFixed(2)} meters</p>
+                      <p><strong>Address:</strong> ${item.vicinity}</p>
+                  `;
+                  document.body.appendChild(placeDetails);
+              });
+          }, error => {
+              console.error('Error fetching nearby places:', error);
+          });
+      }
+  </script>
+    
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Details Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      height: 100vh;
+      margin: 0;
+      margin-top:100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #e0e0e0;
+    }
+    .form-container {
+      background-color: #1c1c1e;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      padding: 30px;
+      width: 90%;
+      max-width: 1200px;
+      display: flex;
+      gap: 20px;
+    }
+    .form-column {
+      flex: 1;
+      min-width: 400px;
+      margin: 10px;
+    }
+    .form-column h2 {
+      margin-bottom: 20px;
+      color: #00ffd9;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 6px;
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    .checkbox-group {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    input[type="submit"],
+    button {
+      background-color: #00ffd9;
+      color: #000;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+    input[type="submit"]:hover,
+    button:hover {
+      background-color: #00bfa5;
+    }
+    form {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+    }
+    #calcbmi{
+        margin-bottom: 10px;
+    }
+    .custom-alert {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #00bfa5;
+      color: #000;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      font-size: 18px;
+      display: none;
+      align-items: center;
+      gap: 15px;
+      animation: slideIn 0.5s ease-out;
+    }
+    .custom-alert .emoji {
+      font-size: 24px;
+    }
+    .custom-alert button {
+      background-color: transparent;
+      color: #000;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    /* Animation for alert */
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <form id="detailForm" method="POST" action="/save_details" style="display: flex; flex: 1; gap: 20px;">
+    <div class="form-column">
+      <h2>📝 Personal Details</h2>
+
+      <label for="age">🎂 Age:</label>
+      <input type="text" id="age" name="age">
+
+      <label for="sex">⚧ Sex:</label>
+      <select id="sex" name="sex">
+        <option value="1">Male</option>
+        <option value="0">Female</option>
+      </select>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="diabetes" name="diabetes">
+        <label for="diabetes">🩸 Diabetes</label>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="famhistory" name="famhistory">
+        <label for="famhistory">👨‍👩‍👦‍👦 Family History</label>
+      </div>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="smoking" name="smoking">
+        <label for="smoking">🚬 Smoking</label>
+      </div>
+
+    
+      <div class="checkbox-group">
+        <input type="checkbox" id="alcohol" name="alcohol">
+        <label for="alcohol">🍷 Alcohol Consumption</label>
+      </div>
+
+      <label for="exercise">🏋 Exercise (hrs/week):</label>
+      <input type="text" id="exercise" name="exercise">
+      <label for="bp1">🩺 Blood Pressure (Systolic):</label>
+    <input type="text" id="bp1" name="bp1">
+
+    <label for="bp2">🩺 Blood Pressure (Diastolic):</label>
+    <input type="text" id="bp2" name="bp2">
+    </div>
+    
+
+    <div class="form-column">
+      <h2>💊 Health Details</h2>
+
+      <label for="diet">🥗 Diet:</label>
+      <select id="diet" name="diet">
+        <option value="0">Poor Diet</option>
+        <option value="1">Average Diet</option>
+        <option value="2">Good Diet</option>
+      </select>
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="heartproblem" name="heartproblem">
+        <label for="heartproblem">❤ Heart Problem</label>
+      </div>
+
+      <label for="height">📏 Height (cm):</label>
+      <input type="text" id="height" name="height">
+
+      <label for="weight">⚖ Weight (kg):</label>
+      <input type="text" id="weight" name="weight">
+
+      <button type="button" id="calcbmi" onclick="calculateBMI()">⚡ Calculate BMI</button>
+
+      <label for="bmi">📊 BMI:</label>
+      <input type="text" id="bmi" name="bmi" readonly>
+      <div class="checkbox-group">
+        <input type="checkbox" id="obesity" name="obesity">
+        <label for="obesity">⚖ Obesity</label>
+      </div>
+
+
+      <label for="physicalactivity">🏃 Physical Activity (days/week):</label>
+      <input type="text" id="physicalactivity" name="physicalactivity">
+
+      <label for="sleep">😴 Sleep (hrs/night):</label>
+      <input type="text" id="sleep" name="sleep">
+
+
+
+      <input type="submit" value="🚀 Submit">
+    </div>
+  </form>
+</div>
+<div class="custom-alert" id="successAlert">
+    <span class="emoji">🎉</span> Thank you for submitting!
+    <button onclick="closeAlert()">✖</button>
+  </div>
+
+<script>
+ document.getElementById('detailForm').onsubmit = function(event) {
+    event.preventDefault();  // Prevent the form from submitting immediately
+
+    // Show the success alert
+    document.getElementById('successAlert').style.display = 'flex';
+
+    // Submit the form after showing the alert
+    setTimeout(() => {
+      this.submit();  // Submit the form programmatically
+    }, 2000);  // Delay to show alert for 2 seconds
+  };
+
+  // Close the alert
+  function closeAlert() {
+    document.getElementById('successAlert').style.display = 'none';
+  }
+  function calculateBMI() {
+    const heightCm = parseFloat(document.getElementById('height').value);
+    const weight = parseFloat(document.getElementById('weight').value);
+    const obesityCheckbox = document.getElementById('obesity');
+    
+    if (!isNaN(heightCm) && !isNaN(weight) && heightCm > 0) {
+      const heightM = heightCm / 100;
+      const bmi = weight / (heightM * heightM);
+      document.getElementById('bmi').value = bmi.toFixed(2);
+
+      if (bmi >= 30) {
+        obesityCheckbox.checked = true;
+      } else {
+        obesityCheckbox.checked = false;
+      }
+    } else {
+      alert('⚠ Please enter valid height (cm) and weight (kg).');
+    }
+  }
+</script>
+
+</body>
+</html>

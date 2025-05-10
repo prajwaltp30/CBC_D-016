@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Attack Risk Prediction Result</title>
+    <style>
+        /* Reset default styles and set basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .result {
+            margin-top: 20px;
+        }
+
+        .result p {
+            margin: 10px 0;
+        }
+
+        .result p span {
+            font-weight: bold;
+            color: #1a73e8; /* Adjust color to your preference */
+        }
+
+        .messages {
+            margin-top: 20px;
+        }
+
+        .messages p {
+            margin: 5px 0;
+            color: #ff0000;
+        }
+
+        .category {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        .category-1 {
+            background-color: #dff0d8;
+        }
+
+        .category-2 {
+            background-color: #f0ad4e;
+        }
+
+        .category-3 {
+            background-color: #fcf8e3;
+        }
+
+        .category-4 {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .download-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Heart Attack Risk Prediction Result</h1>
+        <div class="result">
+            <p>Predicted Heart Attack Risk: <span>{{ heart_attack_risk }}</span></p>
+            <p>Predicted Probability: <span>{{ percentage }}%</span></p>
+        </div>
+        <div class="messages">
+            <h2>Factors affecting your risk:</h2>
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        <div class="category category-{{ heart_attack_risk }}-{{ 'less' if percentage < 50 else 'greater' }}">
+            <h2>You fall in this category:</h2>
+            <p>{{ category }}</p>
+        </div>
+        <div class="download-button">
+            <form action="/download_report" method="post">
+                <input type="hidden" name="report_content" value="{{ session['email'] }}    Predicted Heart Attack Risk: {{heart_attack_risk}}      Predicted Probability: {{ percentage }}%        You fall in this category: {{category}}        {% for message in messages %}{{ message }}{% endfor %}">
+                <button type="submit">Download Report</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
