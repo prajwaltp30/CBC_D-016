@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Health Report</title>
+    <link rel="stylesheet" href="/static/upload.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Upload Your Health Report</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".pdf" required>
+        <button type="submit">Upload and Start Chat</button>
+    </form>
+</div>
+
+</body>
+</html>
