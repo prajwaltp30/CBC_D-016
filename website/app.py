@@ -7,7 +7,7 @@ from appwrite.services.account import Account
 from appwrite.services.databases import Databases
 from appwrite.id import ID
 from database.save_user import save_user_data
-from ml_logic.predict import get_user_details, predict_manually # type: ignore
+from ml_logic.predict import get_user_details, predict_manually
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -180,7 +180,7 @@ def show_results():
 
 @app.route('/details_form')
 def details_form():
-    return render_template('detail.html')
+    return render_template('detail.html')#zapak
 
 @app.route('/save_details', methods=['POST'])
 def save_details():
